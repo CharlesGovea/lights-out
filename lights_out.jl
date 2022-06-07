@@ -11,10 +11,26 @@ function showGrid(grid::Matrix{UInt8}, n::UInt8)
 	end
 	println()
     end
+    println()
 end
 
-function toggle(grid::Matrix{UInt8}, coord::Vector{UInt8})
-	println(grid[coord[1], coord[2]])
+function toggle(light::UInt8)
+    light == 0x00 && return 0x01
+    light >> 1
+end
+
+function toggle(grid::Matrix{UInt8}, coord::Vector{UInt8}, n::UInt8)
+    grid[coord[1], coord[2]] = toggle(grid[coord[1], coord[2]])
+    adjacent = []
+    coord[1] > 0x01 && push!(adjacent, (coord[1] - 0x01, coord[2]))
+    coord[1] + 0x01 < n && push!(adjacent, (coord[1] + 0x01, coord[2]))
+    coord[2] > 0x01 && push!(adjacent, (coord[1], coord[2] - 0x01))
+    coord[2] + 0x01 < n && push!(adjacent, (coord[1], coord[2] + 0x01))
+    println(adjacent)
+    for xy ∈ adjacent
+        grid[xy[1], xy[2]] = toggle(grid[xy[1], xy[2]])
+    end
+    grid
 end
 
 #------------Main-------------
@@ -32,6 +48,17 @@ end
 
 n = setSize(n)
 grid = rand((0x00, 0x01), n, n)
-run(`clear`)
-showGrid(grid, n)
 
+while true
+    #run(`clear`)
+    sum(grid) == 0 && break
+    showGrid(grid, n)
+    print("Insert coordinates[x,y]: ")
+    try
+        coord = parse.( UInt8, split(readline(), ',') )
+	global grid = toggle(grid, coord, n)
+    catch
+        continue
+    end
+end
+println("\n🎉🎉 Success!! 🎉🎉")
