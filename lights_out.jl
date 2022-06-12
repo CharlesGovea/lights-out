@@ -23,10 +23,9 @@ function toggle(grid::Matrix{UInt8}, coord::Vector{UInt8}, n::UInt8)
     grid[coord[1], coord[2]] = toggle(grid[coord[1], coord[2]])
     adjacent = []
     coord[1] > 0x01 && push!(adjacent, (coord[1] - 0x01, coord[2]))
-    coord[1] + 0x01 < n && push!(adjacent, (coord[1] + 0x01, coord[2]))
+    coord[1] + 0x01 <= n && push!(adjacent, (coord[1] + 0x01, coord[2]))
     coord[2] > 0x01 && push!(adjacent, (coord[1], coord[2] - 0x01))
-    coord[2] + 0x01 < n && push!(adjacent, (coord[1], coord[2] + 0x01))
-    println(adjacent)
+    coord[2] + 0x01 <= n && push!(adjacent, (coord[1], coord[2] + 0x01))
     for xy ∈ adjacent
         grid[xy[1], xy[2]] = toggle(grid[xy[1], xy[2]])
     end
@@ -50,7 +49,7 @@ n = setSize(n)
 grid = rand((0x00, 0x01), n, n)
 
 while true
-    #run(`clear`)
+    run(`clear`)
     sum(grid) == 0 && break
     showGrid(grid, n)
     print("Insert coordinates[x,y]: ")
