@@ -39,7 +39,7 @@ function read_problem()
 end
 
 function search_solution(grid::Matrix{UInt8}, row::UInt8, col::UInt8, n::UInt8)
-    sleep(0.05)
+    sleep(0.02)
     run(`clear`)
     showGrid(grid, n)
     sum(grid) == 0x00 && return true
