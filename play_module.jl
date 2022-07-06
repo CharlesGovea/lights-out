@@ -8,9 +8,9 @@ function showGrid(grid::Matrix{UInt8}, n::UInt8)
     for i ∈ 1:n
         for j ∈ 1:n
 	    if grid[i, j] == 0x01
-	        print("🌑 ")
-	    else
 	        print("🌕 ")
+	    else
+	        print("🌑 ")
 	    end
 	end
 	println()
@@ -72,4 +72,4 @@ function initGame()
     println("\n🎉🎉 Success!! 🎉🎉")
 end
 
-export initGame, showGrid
+export initGame, showGrid, toggle
